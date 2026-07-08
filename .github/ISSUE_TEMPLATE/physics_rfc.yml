@@ -1,0 +1,33 @@
+name: Physics RFC
+description: Propose or validate a physics/modeling change.
+title: "[Physics RFC] "
+labels: ["physics", "rfc", "triage"]
+body:
+  - type: textarea
+    id: claim
+    attributes:
+      label: Physical claim
+      description: State the model/parameter/channel claim and why it matters.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence and fixtures
+      description: Include source, unit, channels, track/vehicle fixture and expected tolerance.
+    validations:
+      required: true
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation impact
+      description: Which repo, solver, contract or API changes?
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation gate
+      description: How will this be tested before being called validated?
+    validations:
+      required: true

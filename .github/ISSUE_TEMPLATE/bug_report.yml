@@ -1,0 +1,30 @@
+name: Bug report
+description: Report a reproducible product, API, engine, docs or physics issue.
+title: "[Bug] "
+labels: ["bug", "triage"]
+body:
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Logs, screenshots, telemetry sample, fixture or API payload.
+    validations:
+      required: false
