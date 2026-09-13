@@ -1,0 +1,58 @@
+# A organizacao SaruSysLab esta no plano GitHub Free. Nesse plano, ruleset e branch
+# protection para bloquear push direto em `main` so funcionam de graca em repositorio
+# publico da organizacao; em repositorio privado, exigem o plano GitHub Team (fonte:
+# docs.github.com/repositories/.../about-protected-branches e github.com/pricing,
+# citados em _auditoria/06-padrao-org-github.md secao 2). Como a maioria dos
+# repositorios de codigo da SARU e privada, este workflow NAO consegue impedir um
+# push direto em main: ele so roda depois que o push ja aconteceu, e falha o job
+# para avisar quem empurrou e quem revisa. Cada repositorio chama este arquivo como
+# workflow reutilizavel a partir do seu proprio `.github/workflows/`, com
+# `uses: SaruSysLab/.github/workflows/guard-pr.yml@main`.
+name: Guarda de push direto em main
+
+on:
+  push:
+    branches:
+      - main
+  workflow_call: {}
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  guard-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar se o commit veio de um pull request mesclado
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SHA: ${{ github.sha }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -e
+
+          if ! gh api "repos/${REPO}/commits/${SHA}/pulls" > pulls.json 2> api-error.log; then
+            echo "::warning::Nao foi possivel consultar a API de pull requests para o commit ${SHA}. Verificacao pulada, sem bloqueio."
+            cat api-error.log
+            exit 0
+          fi
+
+          python3 - "$SHA" <<'PYEOF'
+          import json
+          import sys
+
+          sha = sys.argv[1]
+
+          with open("pulls.json") as f:
+              prs = json.load(f)
+
+          merged = [pr for pr in prs if pr.get("merged_at")]
+
+          if not merged:
+              print(f"::error::Push direto em main detectado. O commit {sha} nao esta associado a nenhum pull request mesclado. Regra da organizacao: nunca fazer push direto em main (CONTRIBUTING.md).")
+              sys.exit(1)
+
+          numeros = ", ".join(f"#{pr['number']}" for pr in merged)
+          print(f"Commit {sha} associado ao pull request mesclado {numeros}.")
+          PYEOF
