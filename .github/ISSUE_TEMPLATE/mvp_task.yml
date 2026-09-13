@@ -1,0 +1,37 @@
+name: MVP task
+description: Track product, engineering, docs or infra work for the SARU MVP.
+title: "[MVP] "
+labels: ["mvp", "triage"]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: What must be true when this task is done?
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Include repo/module, user flow, API, docs or physics area.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation
+      description: List required checks, fixtures, screenshots or demo steps.
+    validations:
+      required: true
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - P0
+        - P1
+        - P2
+        - P3
+    validations:
+      required: true
