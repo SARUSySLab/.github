@@ -1,0 +1,43 @@
+name: Bug
+description: Reportar um comportamento incorreto
+title: "[prefixo] "
+labels: ["tipo:bug", "triagem"]
+body:
+  - type: dropdown
+    id: prefixo
+    attributes:
+      label: Prefixo da família
+      description: Família a que este bug pertence
+      options:
+        - E
+        - PIL
+        - CAM
+        - ENG
+        - EQP
+        - ALU
+    validations:
+      required: true
+  - type: textarea
+    id: comportamento
+    attributes:
+      label: O que aconteceu
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: O que deveria acontecer
+    validations:
+      required: true
+  - type: textarea
+    id: reproducao
+    attributes:
+      label: Passo a passo para reproduzir
+    validations:
+      required: true
+  - type: input
+    id: versao
+    attributes:
+      label: Versão ou commit
+    validations:
+      required: true

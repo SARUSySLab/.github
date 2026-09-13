@@ -1,0 +1,38 @@
+name: Pesquisa
+description: Registrar uma pergunta de pesquisa e a fonte consultada
+title: "[prefixo] "
+labels: ["tipo:pesquisa", "triagem"]
+body:
+  - type: dropdown
+    id: prefixo
+    attributes:
+      label: Prefixo da família
+      description: Família a que esta pesquisa pertence
+      options:
+        - E
+        - PIL
+        - CAM
+        - ENG
+        - EQP
+        - ALU
+    validations:
+      required: true
+  - type: textarea
+    id: pergunta
+    attributes:
+      label: Pergunta de pesquisa
+    validations:
+      required: true
+  - type: textarea
+    id: fonte
+    attributes:
+      label: Fonte consultada
+      description: Link ou documento, um por linha
+    validations:
+      required: true
+  - type: textarea
+    id: resposta
+    attributes:
+      label: Resposta encontrada, se já existe
+    validations:
+      required: false

@@ -1,0 +1,88 @@
+name: Tarefa
+description: Modelo de requisito completo, com história, critério de aceitação e rastreabilidade
+title: "[prefixo] "
+labels: ["tipo:feature", "triagem"]
+body:
+  - type: dropdown
+    id: prefixo
+    attributes:
+      label: Prefixo da família
+      description: Família a que esta tarefa pertence
+      options:
+        - E
+        - PIL
+        - CAM
+        - ENG
+        - EQP
+        - ALU
+    validations:
+      required: true
+  - type: textarea
+    id: historia
+    attributes:
+      label: História
+      description: "Formato: como <papel>, preciso que <capacidade>, para <benefício>."
+      placeholder: |
+        Como piloto,
+        preciso que o corte de volta funcione sem GPS coerente,
+        para não perder o track day inteiro por falha de sinal.
+    validations:
+      required: true
+  - type: textarea
+    id: criterios
+    attributes:
+      label: Critérios de aceitação
+      description: Checklist em Dado, Quando, Então. Um critério por linha.
+      placeholder: |
+        - [ ] Dado X, quando Y, então Z
+    validations:
+      required: true
+  - type: textarea
+    id: restricoes
+    attributes:
+      label: Restrições não funcionais
+      description: Desempenho, disponibilidade, segurança, idioma, o que se aplica a esta tarefa
+    validations:
+      required: false
+  - type: textarea
+    id: notas
+    attributes:
+      label: Notas técnicas
+      description: Decisão de implementação já tomada, arquivo, tabela ou API envolvida
+    validations:
+      required: false
+  - type: input
+    id: milestone
+    attributes:
+      label: Milestone
+    validations:
+      required: false
+  - type: input
+    id: epico
+    attributes:
+      label: Épico
+    validations:
+      required: false
+  - type: input
+    id: depende_de
+    attributes:
+      label: Depende de
+      description: Número de outra issue, ou "nenhuma"
+    validations:
+      required: false
+  - type: input
+    id: bloqueia
+    attributes:
+      label: Bloqueia
+      description: Número de outra issue, ou "nenhuma"
+    validations:
+      required: false
+  - type: dropdown
+    id: cabe_semana
+    attributes:
+      label: Cabe em uma semana de sprint
+      options:
+        - "sim"
+        - "não, precisa ser quebrada antes de entrar"
+    validations:
+      required: true
