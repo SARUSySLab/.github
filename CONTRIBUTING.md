@@ -17,8 +17,7 @@ tiverem um `CONTRIBUTING.md` próprio.
    automaticamente quando o PR for mesclado.
 6. Espere a CI ficar verde e a revisão de outra pessoa. Nenhum agente de IA aprova ou
    mescla pull request.
-7. Mescle por squash, um commit só na `main` e histórico linear. Esta é a recomendação
-   atual da empresa; a decisão final está registrada em `saru/docs/decisions.md`.
+7. Mescle por squash: um commit só na `main` e histórico linear (decisão de 2026-09-13).
 8. Apague a branch depois do merge.
 
 ## Definition of Ready
