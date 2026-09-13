@@ -1,0 +1,40 @@
+name: Dado
+description: Registrar origem e formato de um dado novo no acervo
+title: "[prefixo] "
+labels: ["tipo:dado", "triagem"]
+body:
+  - type: dropdown
+    id: prefixo
+    attributes:
+      label: Prefixo da família
+      description: Selecione a família e substitua [prefixo] no título acima pelo mesmo código (E, PIL, CAM, ENG, EQP, ALU)
+      options:
+        - E
+        - PIL
+        - CAM
+        - ENG
+        - EQP
+        - ALU
+    validations:
+      required: true
+  - type: textarea
+    id: origem
+    attributes:
+      label: Origem do dado
+      description: Logger, evento, piloto ou fonte de onde o dado veio
+    validations:
+      required: true
+  - type: textarea
+    id: formato
+    attributes:
+      label: Formato
+      description: Extensão do arquivo, estrutura e tamanho aproximado
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacidade
+    attributes:
+      label: Privacidade
+      options:
+        - label: Dado não contém informação pessoal ou de cliente sem autorização
+          required: true

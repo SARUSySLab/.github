@@ -1,0 +1,4 @@
+# Modelo a copiar em cada repositório de código: o GitHub não herda CODEOWNERS do
+# repositório da organização. Cada repositório ajusta o dono por caminho quando precisar
+# (física, contrato, segurança).
+* @vitormtt

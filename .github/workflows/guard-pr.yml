@@ -1,0 +1,82 @@
+# A organizacao SaruSysLab esta no plano GitHub Free. Nesse plano, ruleset e branch
+# protection para bloquear push direto em `main` so funcionam de graca em repositorio
+# publico da organizacao; em repositorio privado, exigem o plano GitHub Team (fonte:
+# docs.github.com/repositories/.../about-protected-branches e github.com/pricing,
+# citados em _auditoria/06-padrao-org-github.md secao 2). Como a maioria dos
+# repositorios de codigo da SARU e privada, este workflow NAO consegue impedir um
+# push direto em main: ele so roda depois que o push ja aconteceu, e falha o job
+# para avisar quem empurrou e quem revisa. Cada repositorio chama este arquivo como
+# workflow reutilizavel a partir do seu proprio `.github/workflows/`, com
+# `uses: SaruSysLab/.github/.github/workflows/guard-pr.yml@main` (o primeiro `.github` e o
+# repositorio, o segundo e a pasta; workflow reutilizavel so vale dentro de `.github/workflows/`).
+name: Guarda de push direto em main
+
+on:
+  push:
+    branches:
+      - main
+  workflow_call: {}
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  guard-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar se todos os commits vieram de pull request mesclado em main
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          COMMITS_JSON: ${{ toJson(github.event.commits) }}
+          TIP_SHA: ${{ github.sha }}
+        run: |
+          set -e
+
+          python3 - <<'PYEOF'
+          import json
+          import os
+          import subprocess
+          import sys
+
+          repo = os.environ["REPO"]
+          tip_sha = os.environ["TIP_SHA"]
+          raw_commits = os.environ.get("COMMITS_JSON", "")
+
+          try:
+              commits = json.loads(raw_commits) if raw_commits and raw_commits != "null" else []
+          except Exception:
+              commits = []
+
+          shas = [c["id"] for c in commits if "id" in c]
+          if not shas:
+              shas = [tip_sha]
+
+          for sha in shas:
+              res = subprocess.run(
+                  ["gh", "api", f"repos/{repo}/commits/{sha}/pulls"],
+                  capture_output=True,
+                  text=True,
+              )
+              if res.returncode != 0:
+                  print(f"::warning::Nao foi possivel consultar pull requests para o commit {sha}. Pulando verificacao.")
+                  continue
+
+              try:
+                  prs = json.loads(res.stdout)
+              except Exception:
+                  prs = []
+
+              merged_main = [
+                  pr for pr in prs
+                  if pr.get("merged_at") and pr.get("base", {}).get("ref") == "main"
+              ]
+
+              if not merged_main:
+                  print(f"::error::Push direto em main detectado. O commit {sha} nao esta associado a nenhum pull request mesclado na branch main. Regra da organizacao: nunca fazer push direto em main (CONTRIBUTING.md).")
+                  sys.exit(1)
+
+              numeros = ", ".join(f"#{pr['number']}" for pr in merged_main)
+              print(f"Commit {sha} validado em PR(s) mesclado(s) em main: {numeros}.")
+          PYEOF
