@@ -1,0 +1,4 @@
+# Dono padrão da organização, herdado por repositório que não tiver o seu próprio
+# CODEOWNERS. Cada repositório de código sobrescreve este arquivo com dono por
+# caminho quando precisar (física, contrato, segurança).
+* @vitormtt
