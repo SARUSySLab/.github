@@ -1,22 +1,25 @@
-# SARU
+# SARU Systems Lab
 
-SARU e um ecossistema de software para motorsport que conecta telemetria real,
-simulacao e decisao tecnica rastreavel.
+SARU é um ecossistema de software para motorsport que conecta telemetria real,
+simulação e decisão técnica rastreável.
 
-## Repos
+## Repositórios ativos
 
-- `saru-app`: produto e plataforma.
-- `saru-physics-py`: fisica Python rapida.
-- `saru-physics-jl`: fisica Julia de alta fidelidade.
-- `saru-docs`: documentacao viva.
-- `saru-research`: arquivo historico.
+- `saru-poc-trackday`: repositório da família Piloto, do arquivo do piloto ao insight
+  num track day.
+- `dados_telemetria`: acervo de telemetria da SARU, com dados brutos, workbooks e
+  referência de Porsche Cup, AMG GT4, F3, ACC, superbike e kart.
+
+Os demais repositórios da organização estão arquivados e servem só como fonte de peças
+a portar.
 
 ## Processo
 
-Usamos GitHub Flow: `main` protegida, branches curtas, PRs pequenos, CI verde,
-CODEOWNERS e Conventional Commits.
+GitHub Flow: branch curta a partir de `main`, pull request revisado e CI verde antes do
+merge. Conventional Commits em português. Issue com prefixo de família antes de qualquer
+código.
 
-## MVP
+## Por onde começar
 
-O primeiro recorte comercial e SA + Sim Reference: importar telemetria real,
-normalizar canais, comparar voltas e gerar uma referencia simulada com lastro.
+Leia o `CONTRIBUTING.md` deste repositório antes de abrir a primeira issue ou o primeiro
+pull request.
