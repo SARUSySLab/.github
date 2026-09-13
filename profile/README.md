@@ -7,8 +7,7 @@ simulação e decisão técnica rastreável.
 
 - `saru-poc-trackday`: repositório da família Piloto, do arquivo do piloto ao insight
   num track day.
-- `dados_telemetria`: acervo de telemetria da SARU, com dados brutos, workbooks e
-  referência de Porsche Cup, AMG GT4, F3, ACC, superbike e kart.
+- `dados_telemetria`: acervo interno de telemetria, acesso restrito a membros.
 
 Os demais repositórios da organização estão arquivados e servem só como fonte de peças
 a portar.

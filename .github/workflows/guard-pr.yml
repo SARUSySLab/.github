@@ -7,7 +7,8 @@
 # push direto em main: ele so roda depois que o push ja aconteceu, e falha o job
 # para avisar quem empurrou e quem revisa. Cada repositorio chama este arquivo como
 # workflow reutilizavel a partir do seu proprio `.github/workflows/`, com
-# `uses: SaruSysLab/.github/workflows/guard-pr.yml@main`.
+# `uses: SaruSysLab/.github/.github/workflows/guard-pr.yml@main` (o primeiro `.github` e o
+# repositorio, o segundo e a pasta; workflow reutilizavel so vale dentro de `.github/workflows/`).
 name: Guarda de push direto em main
 
 on:

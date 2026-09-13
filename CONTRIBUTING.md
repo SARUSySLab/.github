@@ -7,17 +7,18 @@ tiverem um `CONTRIBUTING.md` próprio.
 
 1. Abra uma issue nova ou pegue uma existente, com prefixo de família no título e no
    rótulo (`E`, `PIL`, `CAM`, `ENG`, `EQP`, `ALU`).
-2. Rode `gh issue develop <numero> --checkout` para criar a branch a partir da issue e
-   já mudar para ela.
-3. Nomeie a branch `<prefixo>/<numero>-<tema>`, em minúsculas, com hífen entre palavras
-   (exemplo: `pil/42-corte-de-volta-por-gps`).
+2. Crie a branch a partir da issue, já com o nome no padrão `<prefixo>/<numero>-<tema>`,
+   em minúsculas e com hífen entre palavras, e mude para ela:
+   `gh issue develop <numero> --name pil/42-corte-de-volta-por-gps --checkout`.
+3. Confira com `git branch --show-current` que está na branch certa antes do primeiro commit.
 4. Faça commits em Conventional Commits, em português, até 72 caracteres no título
    (exemplo: `feat: adiciona corte de volta por GPS`).
 5. Abra o pull request com `Closes #<numero>` na descrição, para a issue fechar
    automaticamente quando o PR for mesclado.
 6. Espere a CI ficar verde e a revisão de outra pessoa. Nenhum agente de IA aprova ou
    mescla pull request.
-7. Mescle por squash: um commit só na `main`, histórico linear.
+7. Mescle por squash, um commit só na `main` e histórico linear. Esta é a recomendação
+   atual da empresa; a decisão final está registrada em `saru/docs/decisions.md`.
 8. Apague a branch depois do merge.
 
 ## Definition of Ready
