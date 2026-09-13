@@ -7,7 +7,7 @@ body:
     id: prefixo
     attributes:
       label: Prefixo da família
-      description: Família a que esta tarefa pertence
+      description: Selecione a família e substitua [prefixo] no título acima pelo mesmo código (E, PIL, CAM, ENG, EQP, ALU)
       options:
         - E
         - PIL
@@ -15,6 +15,15 @@ body:
         - ENG
         - EQP
         - ALU
+    validations:
+      required: true
+  - type: textarea
+    id: fonte
+    attributes:
+      label: Fonte do requisito
+      description: Origem obrigatória pelo Definition of Ready (livro, regulamento, telemetria real, observação em pista, decisão em docs/decisions.md)
+      placeholder: |
+        Ex.: Requisito PIL-RF-03; Telemetria Interlagos volta 4; Decisão de 2026-09-13 em docs/decisions.md.
     validations:
       required: true
   - type: textarea
@@ -69,7 +78,7 @@ body:
       label: Depende de
       description: Número de outra issue, ou "nenhuma"
     validations:
-      required: false
+      required: true
   - type: input
     id: bloqueia
     attributes:

@@ -20,5 +20,5 @@ código.
 
 ## Por onde começar
 
-Leia o `CONTRIBUTING.md` deste repositório antes de abrir a primeira issue ou o primeiro
+Leia o [CONTRIBUTING.md](../CONTRIBUTING.md) deste repositório antes de abrir a primeira issue ou o primeiro
 pull request.

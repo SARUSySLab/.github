@@ -7,7 +7,7 @@ body:
     id: prefixo
     attributes:
       label: Prefixo da família
-      description: Família a que este dado pertence
+      description: Selecione a família e substitua [prefixo] no título acima pelo mesmo código (E, PIL, CAM, ENG, EQP, ALU)
       options:
         - E
         - PIL

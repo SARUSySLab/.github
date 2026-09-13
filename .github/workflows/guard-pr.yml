@@ -25,35 +25,58 @@ jobs:
   guard-pr:
     runs-on: ubuntu-latest
     steps:
-      - name: Verificar se o commit veio de um pull request mesclado
+      - name: Verificar se todos os commits vieram de pull request mesclado em main
         env:
           GH_TOKEN: ${{ github.token }}
-          SHA: ${{ github.sha }}
           REPO: ${{ github.repository }}
+          COMMITS_JSON: ${{ toJson(github.event.commits) }}
+          TIP_SHA: ${{ github.sha }}
         run: |
           set -e
 
-          if ! gh api "repos/${REPO}/commits/${SHA}/pulls" > pulls.json 2> api-error.log; then
-            echo "::warning::Nao foi possivel consultar a API de pull requests para o commit ${SHA}. Verificacao pulada, sem bloqueio."
-            cat api-error.log
-            exit 0
-          fi
-
-          python3 - "$SHA" <<'PYEOF'
+          python3 - <<'PYEOF'
           import json
+          import os
+          import subprocess
           import sys
 
-          sha = sys.argv[1]
+          repo = os.environ["REPO"]
+          tip_sha = os.environ["TIP_SHA"]
+          raw_commits = os.environ.get("COMMITS_JSON", "")
 
-          with open("pulls.json") as f:
-              prs = json.load(f)
+          try:
+              commits = json.loads(raw_commits) if raw_commits and raw_commits != "null" else []
+          except Exception:
+              commits = []
 
-          merged = [pr for pr in prs if pr.get("merged_at")]
+          shas = [c["id"] for c in commits if "id" in c]
+          if not shas:
+              shas = [tip_sha]
 
-          if not merged:
-              print(f"::error::Push direto em main detectado. O commit {sha} nao esta associado a nenhum pull request mesclado. Regra da organizacao: nunca fazer push direto em main (CONTRIBUTING.md).")
-              sys.exit(1)
+          for sha in shas:
+              res = subprocess.run(
+                  ["gh", "api", f"repos/{repo}/commits/{sha}/pulls"],
+                  capture_output=True,
+                  text=True,
+              )
+              if res.returncode != 0:
+                  print(f"::warning::Nao foi possivel consultar pull requests para o commit {sha}. Pulando verificacao.")
+                  continue
 
-          numeros = ", ".join(f"#{pr['number']}" for pr in merged)
-          print(f"Commit {sha} associado ao pull request mesclado {numeros}.")
+              try:
+                  prs = json.loads(res.stdout)
+              except Exception:
+                  prs = []
+
+              merged_main = [
+                  pr for pr in prs
+                  if pr.get("merged_at") and pr.get("base", {}).get("ref") == "main"
+              ]
+
+              if not merged_main:
+                  print(f"::error::Push direto em main detectado. O commit {sha} nao esta associado a nenhum pull request mesclado na branch main. Regra da organizacao: nunca fazer push direto em main (CONTRIBUTING.md).")
+                  sys.exit(1)
+
+              numeros = ", ".join(f"#{pr['number']}" for pr in merged_main)
+              print(f"Commit {sha} validado em PR(s) mesclado(s) em main: {numeros}.")
           PYEOF
